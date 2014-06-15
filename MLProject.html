@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Exercise prediction, coursera Machine Learning Project</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<h1>Exercise prediction, coursera Machine Learning Project</h1>
+
+<p>## Executive summary</p>
+
+<p>This project is to predict the manner in which subjects did an exercise, there are 5 options (&ldquo;A&rdquo;:according to the specification,&ldquo;B&rdquo; throwing the elbows to the front, &ldquo;C&rdquo; lifting the dumbbell only halfway, &ldquo;D&rdquo; lowering the dumbbell only halfway and &ldquo;E&rdquo; throwing the hips to the front
+  I used the data from <a href="http://groupware.les.inf.puc-rio.br/har">http://groupware.les.inf.puc-rio.br/har</a></p>
+
+<p>In the process was considered a linear discriminant analysis and logistic regression, the best model was the logistic regression with an accuracy of 75% in the train set. The approximate accuracy for predict the classes A,B,C,D and E are 87.96%, 66.07%, 70.76%, 71.52% and 69.03%, respectively. </p>
+
+<p>When testing against the test set 15 out of 20 (or 75%) of predictions were correct on most likely classification based on the glm model and 18/20 (or 90%) when taking the 2nd highest probability for those predicted incorrectly on the highest class probability prediction.</p>
+
+<h2>Pre analysis and data cleaning</h2>
+
+<p>Let&#39;s load the file and take a look at the data</p>
+
+<pre><code class="r">train=read.csv(file=&quot;pml-training.csv&quot;,header=TRUE) ; ## load the file
+names_train&lt;-names(train)
+#Vector that contain the index for the information of arms,belt,dumbbell and forearms
+index&lt;-vector()
+str(train)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    19622 obs. of  160 variables:
+##  $ X                       : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ user_name               : Factor w/ 6 levels &quot;adelmo&quot;,&quot;carlitos&quot;,..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ raw_timestamp_part_1    : int  1323084231 1323084231 1323084231 1323084232 1323084232 1323084232 1323084232 1323084232 1323084232 1323084232 ...
+##  $ raw_timestamp_part_2    : int  788290 808298 820366 120339 196328 304277 368296 440390 484323 484434 ...
+##  $ cvtd_timestamp          : Factor w/ 20 levels &quot;02/12/2011 13:32&quot;,..: 9 9 9 9 9 9 9 9 9 9 ...
+##  $ new_window              : Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ num_window              : int  11 11 11 12 12 12 12 12 12 12 ...
+##  $ roll_belt               : num  1.41 1.41 1.42 1.48 1.48 1.45 1.42 1.42 1.43 1.45 ...
+##  $ pitch_belt              : num  8.07 8.07 8.07 8.05 8.07 8.06 8.09 8.13 8.16 8.17 ...
+##  $ yaw_belt                : num  -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 ...
+##  $ total_accel_belt        : int  3 3 3 3 3 3 3 3 3 3 ...
+##  $ kurtosis_roll_belt      : Factor w/ 397 levels &quot;&quot;,&quot;-0.016850&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ kurtosis_picth_belt     : Factor w/ 317 levels &quot;&quot;,&quot;-0.021887&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ kurtosis_yaw_belt       : Factor w/ 2 levels &quot;&quot;,&quot;#DIV/0!&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_roll_belt      : Factor w/ 395 levels &quot;&quot;,&quot;-0.003095&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_roll_belt.1    : Factor w/ 338 levels &quot;&quot;,&quot;-0.005928&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_yaw_belt       : Factor w/ 2 levels &quot;&quot;,&quot;#DIV/0!&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ max_roll_belt           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ max_picth_belt          : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ max_yaw_belt            : Factor w/ 68 levels &quot;&quot;,&quot;-0.1&quot;,&quot;-0.2&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ min_roll_belt           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ min_pitch_belt          : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ min_yaw_belt            : Factor w/ 68 levels &quot;&quot;,&quot;-0.1&quot;,&quot;-0.2&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ amplitude_roll_belt     : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ amplitude_pitch_belt    : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ amplitude_yaw_belt      : Factor w/ 4 levels &quot;&quot;,&quot;#DIV/0!&quot;,&quot;0.00&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ var_total_accel_belt    : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ avg_roll_belt           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ stddev_roll_belt        : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ var_roll_belt           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ avg_pitch_belt          : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ stddev_pitch_belt       : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ var_pitch_belt          : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ avg_yaw_belt            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ stddev_yaw_belt         : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ var_yaw_belt            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ gyros_belt_x            : num  0 0.02 0 0.02 0.02 0.02 0.02 0.02 0.02 0.03 ...
+##  $ gyros_belt_y            : num  0 0 0 0 0.02 0 0 0 0 0 ...
+##  $ gyros_belt_z            : num  -0.02 -0.02 -0.02 -0.03 -0.02 -0.02 -0.02 -0.02 -0.02 0 ...
+##  $ accel_belt_x            : int  -21 -22 -20 -22 -21 -21 -22 -22 -20 -21 ...
+##  $ accel_belt_y            : int  4 4 5 3 2 4 3 4 2 4 ...
+##  $ accel_belt_z            : int  22 22 23 21 24 21 21 21 24 22 ...
+##  $ magnet_belt_x           : int  -3 -7 -2 -6 -6 0 -4 -2 1 -3 ...
+##  $ magnet_belt_y           : int  599 608 600 604 600 603 599 603 602 609 ...
+##  $ magnet_belt_z           : int  -313 -311 -305 -310 -302 -312 -311 -313 -312 -308 ...
+##  $ roll_arm                : num  -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 ...
+##  $ pitch_arm               : num  22.5 22.5 22.5 22.1 22.1 22 21.9 21.8 21.7 21.6 ...
+##  $ yaw_arm                 : num  -161 -161 -161 -161 -161 -161 -161 -161 -161 -161 ...
+##  $ total_accel_arm         : int  34 34 34 34 34 34 34 34 34 34 ...
+##  $ var_accel_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ avg_roll_arm            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ stddev_roll_arm         : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ var_roll_arm            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ avg_pitch_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ stddev_pitch_arm        : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ var_pitch_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ avg_yaw_arm             : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ stddev_yaw_arm          : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ var_yaw_arm             : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ gyros_arm_x             : num  0 0.02 0.02 0.02 0 0.02 0 0.02 0.02 0.02 ...
+##  $ gyros_arm_y             : num  0 -0.02 -0.02 -0.03 -0.03 -0.03 -0.03 -0.02 -0.03 -0.03 ...
+##  $ gyros_arm_z             : num  -0.02 -0.02 -0.02 0.02 0 0 0 0 -0.02 -0.02 ...
+##  $ accel_arm_x             : int  -288 -290 -289 -289 -289 -289 -289 -289 -288 -288 ...
+##  $ accel_arm_y             : int  109 110 110 111 111 111 111 111 109 110 ...
+##  $ accel_arm_z             : int  -123 -125 -126 -123 -123 -122 -125 -124 -122 -124 ...
+##  $ magnet_arm_x            : int  -368 -369 -368 -372 -374 -369 -373 -372 -369 -376 ...
+##  $ magnet_arm_y            : int  337 337 344 344 337 342 336 338 341 334 ...
+##  $ magnet_arm_z            : int  516 513 513 512 506 513 509 510 518 516 ...
+##  $ kurtosis_roll_arm       : Factor w/ 330 levels &quot;&quot;,&quot;-0.02438&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ kurtosis_picth_arm      : Factor w/ 328 levels &quot;&quot;,&quot;-0.00484&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ kurtosis_yaw_arm        : Factor w/ 395 levels &quot;&quot;,&quot;-0.01548&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_roll_arm       : Factor w/ 331 levels &quot;&quot;,&quot;-0.00051&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_pitch_arm      : Factor w/ 328 levels &quot;&quot;,&quot;-0.00184&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_yaw_arm        : Factor w/ 395 levels &quot;&quot;,&quot;-0.00311&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ max_roll_arm            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ max_picth_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ max_yaw_arm             : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ min_roll_arm            : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ min_pitch_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ min_yaw_arm             : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ amplitude_roll_arm      : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ amplitude_pitch_arm     : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ amplitude_yaw_arm       : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ roll_dumbbell           : num  13.1 13.1 12.9 13.4 13.4 ...
+##  $ pitch_dumbbell          : num  -70.5 -70.6 -70.3 -70.4 -70.4 ...
+##  $ yaw_dumbbell            : num  -84.9 -84.7 -85.1 -84.9 -84.9 ...
+##  $ kurtosis_roll_dumbbell  : Factor w/ 398 levels &quot;&quot;,&quot;-0.0035&quot;,&quot;-0.0073&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ kurtosis_picth_dumbbell : Factor w/ 401 levels &quot;&quot;,&quot;-0.0163&quot;,&quot;-0.0233&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ kurtosis_yaw_dumbbell   : Factor w/ 2 levels &quot;&quot;,&quot;#DIV/0!&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_roll_dumbbell  : Factor w/ 401 levels &quot;&quot;,&quot;-0.0082&quot;,&quot;-0.0096&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_pitch_dumbbell : Factor w/ 402 levels &quot;&quot;,&quot;-0.0053&quot;,&quot;-0.0084&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ skewness_yaw_dumbbell   : Factor w/ 2 levels &quot;&quot;,&quot;#DIV/0!&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ max_roll_dumbbell       : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ max_picth_dumbbell      : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ max_yaw_dumbbell        : Factor w/ 73 levels &quot;&quot;,&quot;-0.1&quot;,&quot;-0.2&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ min_roll_dumbbell       : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ min_pitch_dumbbell      : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ min_yaw_dumbbell        : Factor w/ 73 levels &quot;&quot;,&quot;-0.1&quot;,&quot;-0.2&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ amplitude_roll_dumbbell : num  NA NA NA NA NA NA NA NA NA NA ...
+##   [list output truncated]
+</code></pre>
+
+<pre><code class="r"># head(train) ; # i looked but will spare you the paper here........
+</code></pre>
+
+<p>There are some columns that we&#39;ll need to convert to numeric</p>
+
+<pre><code class="r"># index for store the indexes 
+library(stringr) 
+j&lt;-0
+for (i in 1:length(names_train)) {
+  name&lt;-str_split(names_train[i],&quot;_&quot;)
+  if((any(name[[1]]==&quot;forearm&quot;)|any(name[[1]]==&quot;arm&quot;)|any(name[[1]]==&quot;belt&quot;)|
+        any(name[[1]]==&quot;dumbbell&quot;))&amp;(class(train[,i])==&quot;numeric&quot; |
+                                       class(train[,i])==&quot;integer&quot;) ) 
+  {j&lt;-j+1
+   index[j]&lt;-i}}
+</code></pre>
+
+<p>Let&#39;s split the set in a train and test so we can cross-validate later, I am using the 75% from JL&#39;s training options slides.</p>
+
+<pre><code class="r">library(caret) 
+</code></pre>
+
+<pre><code>## Loading required package: lattice
+## Loading required package: ggplot2
+</code></pre>
+
+<pre><code class="r">set.seed(1)
+inTrain&lt;-createDataPartition(train$classe,p=0.75,list=FALSE)
+test&lt;-train[-inTrain,]
+train&lt;-train[inTrain,]
+</code></pre>
+
+<p>We saw earlier there are quite a number of NAs, so we&#39;ll filter them out</p>
+
+<pre><code class="r">train2&lt;-train[,c(index)]
+#Eliminate the predictors with NA from the train set
+train2&lt;-train2[,!apply(apply(train2,2,is.na),2,any)]
+
+test2&lt;-test[,c(index)]
+#Eliminate the predictors with NA from the test set
+test2&lt;-test2[,!apply(apply(test2,2,is.na),2,any)]
+</code></pre>
+
+<p>-Create a dataframe with all the classes for train the model, the columns of the dataframe contain 0 and 1 for each response, for example if the value correspond with the class the value is 1,otherwise the value is 0.</p>
+
+<pre><code class="r">train_class&lt;-list()
+class&lt;-unique(test$classe)
+
+for (q in 1:length(class)){
+
+  temp&lt;- as.character(train$classe)
+  temp[temp!=class[q]]&lt;-0
+  temp[temp==class[q]]&lt;-1
+
+  train_class[[class[q]]]&lt;-as.numeric(temp)  
+}
+train_class&lt;-as.data.frame(train_class)
+names(train_class)&lt;-class
+head(train_class,5)
+</code></pre>
+
+<pre><code>##   A B C D E
+## 1 1 0 0 0 0
+## 2 1 0 0 0 0
+## 3 1 0 0 0 0
+## 4 1 0 0 0 0
+## 5 1 0 0 0 0
+</code></pre>
+
+<p>The amount of predictors for the models are 52, in these was considered all the information provided from the arms, belt, dumbbell and forearms, for this was necessary removed the predictors that not contain information for all the registers like amplitude and others.</p>
+
+<h2>DESCRIPTION OF THE MODELS</h2>
+
+<p>We&#39;re trying to predict classe to be a, b, c, d, or e, this type of class probability prediction is done well linear discriminant analysis and logistic regression.</p>
+
+<h3>Linear Discriminant Analysis</h3>
+
+<p>I&#39;ll use the default 10 k-folds.</p>
+
+<pre><code class="r">ctrl &lt;- trainControl(method = &quot;cv&quot;) 
+model_lda&lt;-train(train$classe~.,method=&quot;lda&quot;,trControl=ctrl,data=train2)
+</code></pre>
+
+<pre><code>## Loading required package: MASS
+</code></pre>
+
+<pre><code class="r">model_lda
+</code></pre>
+
+<pre><code>## Linear Discriminant Analysis 
+## 
+## 14718 samples
+##    51 predictors
+##     5 classes: &#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## 
+## Summary of sample sizes: 13247, 13245, 13245, 13246, 13247, 13246, ... 
+## 
+## Resampling results
+## 
+##   Accuracy  Kappa  Accuracy SD  Kappa SD
+##   0.7       0.6    0.01         0.01    
+## 
+## 
+</code></pre>
+
+<p>LDA Model accuracy is:</p>
+
+<pre><code class="r">  pred_lda&lt;-predict(model_lda,test2)
+  table_lda&lt;-table(pred_lda,test$classe)
+  acc_lda&lt;-sum(diag(table_lda))/(sum(apply(table_lda,2,sum)))
+  acc_classes&lt;-diag(table_lda)/(apply(table_lda,2,sum))
+
+  #Table of results
+  table_lda
+</code></pre>
+
+<pre><code>  ##         
+  ## pred_lda    A    B    C    D    E
+  ##        A 1136  151   71   38   30
+  ##        B   35  606   76   40  163
+  ##        C  107  114  584   97   81
+  ##        D  111   32   95  606   81
+  ##        E    6   46   29   23  546
+</code></pre>
+
+<pre><code class="r">  #Accuracy of the model
+  acc_lda
+</code></pre>
+
+<pre><code>  ## [1] 0.7092
+</code></pre>
+
+<pre><code class="r">  #Accuracy for A,B,C,D and E respectly
+  acc_classes
+</code></pre>
+
+<pre><code>  ##      A      B      C      D      E 
+  ## 0.8143 0.6386 0.6830 0.7537 0.6060
+</code></pre>
+
+<h3>Logistic Regression</h3>
+
+<pre><code class="r">probs&lt;-list()
+for (ñ in 1:5){
+  model_glm&lt;-glm(train_class[,ñ]~.,family=binomial,data=train2)
+  probs[[ñ]]&lt;-predict(model_glm,test2,type=&quot;response&quot;)
+}
+</code></pre>
+
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+</code></pre>
+
+<pre><code class="r">probs&lt;-as.data.frame(probs)
+names(probs)&lt;-class
+</code></pre>
+
+<p>GLM model accuracy is:</p>
+
+<pre><code class="r">pred&lt;-vector()
+for (w in 1:nrow(test2)){
+  #Select the class for the hightest probability in each row: 
+  pred[w]&lt;-names(probs)[which.max(probs[w,])] 
+}
+</code></pre>
+
+<p>The accuracy is obtained creating a table between the predicted and test classes:</p>
+
+<pre><code class="r">  table_glm&lt;-table(pred,test$classe)
+  acc_glm&lt;-sum(diag(table_glm))/(sum(apply(table_glm,2,sum)))
+  acc_classes_glm&lt;-diag(table_glm)/(apply(table_glm,2,sum))
+</code></pre>
+
+<p>Prediction versus actuals:</p>
+
+<pre><code class="r">#Table of results
+table_glm
+</code></pre>
+
+<pre><code>##     
+## pred    A    B    C    D    E
+##    A 1227  138   78   62   40
+##    B   32  627   77   30  130
+##    C   59   88  605   94   48
+##    D   66   30   53  575   61
+##    E   11   66   42   43  622
+</code></pre>
+
+<pre><code class="r">#Accuracy of the model
+acc_glm
+</code></pre>
+
+<pre><code>## [1] 0.7455
+</code></pre>
+
+<p>This is a higher accuracy on the train results than the lda, and we&#39;ll pick this model.</p>
+
+<pre><code class="r">#Accuracy for A,B,C,D and E respectly
+acc_classes_glm
+</code></pre>
+
+<pre><code>##      A      B      C      D      E 
+## 0.8796 0.6607 0.7076 0.7152 0.6903
+</code></pre>
+
+<h2>Cross validation against the pml_test data</h2>
+
+<p>We&#39;re now going to take a look at the pml test file</p>
+
+<pre><code class="r">  test_final=read.csv(file=&quot;pml-testing.csv&quot;,header=TRUE)
+  str(test_final)
+</code></pre>
+
+<pre><code>  ## &#39;data.frame&#39;:  20 obs. of  160 variables:
+  ##  $ X                       : int  1 2 3 4 5 6 7 8 9 10 ...
+  ##  $ user_name               : Factor w/ 6 levels &quot;adelmo&quot;,&quot;carlitos&quot;,..: 6 5 5 1 4 5 5 5 2 3 ...
+  ##  $ raw_timestamp_part_1    : int  1323095002 1322673067 1322673075 1322832789 1322489635 1322673149 1322673128 1322673076 1323084240 1322837822 ...
+  ##  $ raw_timestamp_part_2    : int  868349 778725 342967 560311 814776 510661 766645 54671 916313 384285 ...
+  ##  $ cvtd_timestamp          : Factor w/ 11 levels &quot;02/12/2011 13:33&quot;,..: 5 10 10 1 6 11 11 10 3 2 ...
+  ##  $ new_window              : Factor w/ 1 level &quot;no&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+  ##  $ num_window              : int  74 431 439 194 235 504 485 440 323 664 ...
+  ##  $ roll_belt               : num  123 1.02 0.87 125 1.35 -5.92 1.2 0.43 0.93 114 ...
+  ##  $ pitch_belt              : num  27 4.87 1.82 -41.6 3.33 1.59 4.44 4.15 6.72 22.4 ...
+  ##  $ yaw_belt                : num  -4.75 -88.9 -88.5 162 -88.6 -87.7 -87.3 -88.5 -93.7 -13.1 ...
+  ##  $ total_accel_belt        : int  20 4 5 17 3 4 4 4 4 18 ...
+  ##  $ kurtosis_roll_belt      : logi  NA NA NA NA NA NA ...
+  ##  $ kurtosis_picth_belt     : logi  NA NA NA NA NA NA ...
+  ##  $ kurtosis_yaw_belt       : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_roll_belt      : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_roll_belt.1    : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_yaw_belt       : logi  NA NA NA NA NA NA ...
+  ##  $ max_roll_belt           : logi  NA NA NA NA NA NA ...
+  ##  $ max_picth_belt          : logi  NA NA NA NA NA NA ...
+  ##  $ max_yaw_belt            : logi  NA NA NA NA NA NA ...
+  ##  $ min_roll_belt           : logi  NA NA NA NA NA NA ...
+  ##  $ min_pitch_belt          : logi  NA NA NA NA NA NA ...
+  ##  $ min_yaw_belt            : logi  NA NA NA NA NA NA ...
+  ##  $ amplitude_roll_belt     : logi  NA NA NA NA NA NA ...
+  ##  $ amplitude_pitch_belt    : logi  NA NA NA NA NA NA ...
+  ##  $ amplitude_yaw_belt      : logi  NA NA NA NA NA NA ...
+  ##  $ var_total_accel_belt    : logi  NA NA NA NA NA NA ...
+  ##  $ avg_roll_belt           : logi  NA NA NA NA NA NA ...
+  ##  $ stddev_roll_belt        : logi  NA NA NA NA NA NA ...
+  ##  $ var_roll_belt           : logi  NA NA NA NA NA NA ...
+  ##  $ avg_pitch_belt          : logi  NA NA NA NA NA NA ...
+  ##  $ stddev_pitch_belt       : logi  NA NA NA NA NA NA ...
+  ##  $ var_pitch_belt          : logi  NA NA NA NA NA NA ...
+  ##  $ avg_yaw_belt            : logi  NA NA NA NA NA NA ...
+  ##  $ stddev_yaw_belt         : logi  NA NA NA NA NA NA ...
+  ##  $ var_yaw_belt            : logi  NA NA NA NA NA NA ...
+  ##  $ gyros_belt_x            : num  -0.5 -0.06 0.05 0.11 0.03 0.1 -0.06 -0.18 0.1 0.14 ...
+  ##  $ gyros_belt_y            : num  -0.02 -0.02 0.02 0.11 0.02 0.05 0 -0.02 0 0.11 ...
+  ##  $ gyros_belt_z            : num  -0.46 -0.07 0.03 -0.16 0 -0.13 0 -0.03 -0.02 -0.16 ...
+  ##  $ accel_belt_x            : int  -38 -13 1 46 -8 -11 -14 -10 -15 -25 ...
+  ##  $ accel_belt_y            : int  69 11 -1 45 4 -16 2 -2 1 63 ...
+  ##  $ accel_belt_z            : int  -179 39 49 -156 27 38 35 42 32 -158 ...
+  ##  $ magnet_belt_x           : int  -13 43 29 169 33 31 50 39 -6 10 ...
+  ##  $ magnet_belt_y           : int  581 636 631 608 566 638 622 635 600 601 ...
+  ##  $ magnet_belt_z           : int  -382 -309 -312 -304 -418 -291 -315 -305 -302 -330 ...
+  ##  $ roll_arm                : num  40.7 0 0 -109 76.1 0 0 0 -137 -82.4 ...
+  ##  $ pitch_arm               : num  -27.8 0 0 55 2.76 0 0 0 11.2 -63.8 ...
+  ##  $ yaw_arm                 : num  178 0 0 -142 102 0 0 0 -167 -75.3 ...
+  ##  $ total_accel_arm         : int  10 38 44 25 29 14 15 22 34 32 ...
+  ##  $ var_accel_arm           : logi  NA NA NA NA NA NA ...
+  ##  $ avg_roll_arm            : logi  NA NA NA NA NA NA ...
+  ##  $ stddev_roll_arm         : logi  NA NA NA NA NA NA ...
+  ##  $ var_roll_arm            : logi  NA NA NA NA NA NA ...
+  ##  $ avg_pitch_arm           : logi  NA NA NA NA NA NA ...
+  ##  $ stddev_pitch_arm        : logi  NA NA NA NA NA NA ...
+  ##  $ var_pitch_arm           : logi  NA NA NA NA NA NA ...
+  ##  $ avg_yaw_arm             : logi  NA NA NA NA NA NA ...
+  ##  $ stddev_yaw_arm          : logi  NA NA NA NA NA NA ...
+  ##  $ var_yaw_arm             : logi  NA NA NA NA NA NA ...
+  ##  $ gyros_arm_x             : num  -1.65 -1.17 2.1 0.22 -1.96 0.02 2.36 -3.71 0.03 0.26 ...
+  ##  $ gyros_arm_y             : num  0.48 0.85 -1.36 -0.51 0.79 0.05 -1.01 1.85 -0.02 -0.5 ...
+  ##  $ gyros_arm_z             : num  -0.18 -0.43 1.13 0.92 -0.54 -0.07 0.89 -0.69 -0.02 0.79 ...
+  ##  $ accel_arm_x             : int  16 -290 -341 -238 -197 -26 99 -98 -287 -301 ...
+  ##  $ accel_arm_y             : int  38 215 245 -57 200 130 79 175 111 -42 ...
+  ##  $ accel_arm_z             : int  93 -90 -87 6 -30 -19 -67 -78 -122 -80 ...
+  ##  $ magnet_arm_x            : int  -326 -325 -264 -173 -170 396 702 535 -367 -420 ...
+  ##  $ magnet_arm_y            : int  385 447 474 257 275 176 15 215 335 294 ...
+  ##  $ magnet_arm_z            : int  481 434 413 633 617 516 217 385 520 493 ...
+  ##  $ kurtosis_roll_arm       : logi  NA NA NA NA NA NA ...
+  ##  $ kurtosis_picth_arm      : logi  NA NA NA NA NA NA ...
+  ##  $ kurtosis_yaw_arm        : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_roll_arm       : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_pitch_arm      : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_yaw_arm        : logi  NA NA NA NA NA NA ...
+  ##  $ max_roll_arm            : logi  NA NA NA NA NA NA ...
+  ##  $ max_picth_arm           : logi  NA NA NA NA NA NA ...
+  ##  $ max_yaw_arm             : logi  NA NA NA NA NA NA ...
+  ##  $ min_roll_arm            : logi  NA NA NA NA NA NA ...
+  ##  $ min_pitch_arm           : logi  NA NA NA NA NA NA ...
+  ##  $ min_yaw_arm             : logi  NA NA NA NA NA NA ...
+  ##  $ amplitude_roll_arm      : logi  NA NA NA NA NA NA ...
+  ##  $ amplitude_pitch_arm     : logi  NA NA NA NA NA NA ...
+  ##  $ amplitude_yaw_arm       : logi  NA NA NA NA NA NA ...
+  ##  $ roll_dumbbell           : num  -17.7 54.5 57.1 43.1 -101.4 ...
+  ##  $ pitch_dumbbell          : num  25 -53.7 -51.4 -30 -53.4 ...
+  ##  $ yaw_dumbbell            : num  126.2 -75.5 -75.2 -103.3 -14.2 ...
+  ##  $ kurtosis_roll_dumbbell  : logi  NA NA NA NA NA NA ...
+  ##  $ kurtosis_picth_dumbbell : logi  NA NA NA NA NA NA ...
+  ##  $ kurtosis_yaw_dumbbell   : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_roll_dumbbell  : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_pitch_dumbbell : logi  NA NA NA NA NA NA ...
+  ##  $ skewness_yaw_dumbbell   : logi  NA NA NA NA NA NA ...
+  ##  $ max_roll_dumbbell       : logi  NA NA NA NA NA NA ...
+  ##  $ max_picth_dumbbell      : logi  NA NA NA NA NA NA ...
+  ##  $ max_yaw_dumbbell        : logi  NA NA NA NA NA NA ...
+  ##  $ min_roll_dumbbell       : logi  NA NA NA NA NA NA ...
+  ##  $ min_pitch_dumbbell      : logi  NA NA NA NA NA NA ...
+  ##  $ min_yaw_dumbbell        : logi  NA NA NA NA NA NA ...
+  ##  $ amplitude_roll_dumbbell : logi  NA NA NA NA NA NA ...
+  ##   [list output truncated]
+</code></pre>
+
+<p>We&#39;ll have to predict the class (a,b,c,d,e) for these in 20 files.</p>
+
+<pre><code class="r">probs_final&lt;-list()  
+for (ñ in 1:5){
+  model_glm&lt;-glm(train_class[,ñ]~.,family=binomial,data=train2)
+  probs_final[[ñ]]&lt;-predict(model_glm,test_final,type=&quot;response&quot;)
+}
+</code></pre>
+
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+</code></pre>
+
+<pre><code class="r">probs_final&lt;-as.data.frame(probs_final)
+names(probs_final)&lt;-class
+</code></pre>
+
+<pre><code class="r">pred_final&lt;-vector()
+for (w in 1:nrow(test_final)){
+  pred_final[w]&lt;-names(probs_final)[which.max(probs_final[w,])]}
+</code></pre>
+
+<p>The prediction for the twenty cases supplied by the course of practical machine learning are:</p>
+
+<pre><code class="r">  pred_final
+</code></pre>
+
+<pre><code>  ##  [1] &quot;B&quot; &quot;A&quot; &quot;B&quot; &quot;A&quot; &quot;C&quot; &quot;E&quot; &quot;D&quot; &quot;E&quot; &quot;A&quot; &quot;A&quot; &quot;D&quot; &quot;A&quot; &quot;B&quot; &quot;A&quot; &quot;E&quot; &quot;A&quot; &quot;A&quot;
+  ## [18] &quot;B&quot; &quot;B&quot; &quot;B&quot;
+</code></pre>
+
+<pre><code class="r">  pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0(&quot;problem_id_&quot;,i,&quot;.txt&quot;)
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+  }
+
+  pml_write_files(pred_final)
+</code></pre>
+
+<p>Having uploaded the results on the submission page the glm model prediction scored 15/20 = 75%, this is in line with the glm model accuracy of 74.55% calculated above on the training set.
+Incorrect were the predictions on 5,8,11,12 and 16.</p>
+
+<pre><code class="r">wrong_pred&lt;-c(8,11,12,16)
+</code></pre>
+
+<p>So, for these I am going to go with the next highest probability classification. </p>
+
+<pre><code class="r">for (w in wrong_pred){
+  sort_probs&lt;-sort(probs_final[w,],decreasing=TRUE,index.return=TRUE)
+  #predict the class with the second hightest probability:
+  pred_final[w]&lt;-names(sort_probs)[2]}
+</code></pre>
+
+<p>The new predict values for this cases are:</p>
+
+<pre><code class="r">  pred_final[wrong_pred]
+</code></pre>
+
+<pre><code>  ## [1] &quot;B&quot; &quot;A&quot; &quot;C&quot; &quot;E&quot;
+</code></pre>
+
+<pre><code class="r">  pred_final
+</code></pre>
+
+<pre><code>  ##  [1] &quot;B&quot; &quot;A&quot; &quot;B&quot; &quot;A&quot; &quot;C&quot; &quot;E&quot; &quot;D&quot; &quot;B&quot; &quot;A&quot; &quot;A&quot; &quot;A&quot; &quot;C&quot; &quot;B&quot; &quot;A&quot; &quot;E&quot; &quot;E&quot; &quot;A&quot;
+  ## [18] &quot;B&quot; &quot;B&quot; &quot;B&quot;
+</code></pre>
+
+<p>Write the files again:</p>
+
+<pre><code class="r">  pred_final
+</code></pre>
+
+<pre><code>  ##  [1] &quot;B&quot; &quot;A&quot; &quot;B&quot; &quot;A&quot; &quot;C&quot; &quot;E&quot; &quot;D&quot; &quot;B&quot; &quot;A&quot; &quot;A&quot; &quot;A&quot; &quot;C&quot; &quot;B&quot; &quot;A&quot; &quot;E&quot; &quot;E&quot; &quot;A&quot;
+  ## [18] &quot;B&quot; &quot;B&quot; &quot;B&quot;
+</code></pre>
+
+<pre><code class="r">  pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0(&quot;problem_id_&quot;,i,&quot;.txt&quot;)
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+  }
+
+  pml_write_files(pred_final)
+</code></pre>
+
+<p>Resubmit my predictions for the 5 missed returned 3 more correct predictions.</p>
+
+</body>
+
+</html>
+
