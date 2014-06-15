@@ -1,0 +1,255 @@
+
+
+Exercise prediction, coursera Machine Learning Project
+========================================================
+  
+  ## Executive summary
+  
+  This project is to predict the manner in which subjects did an exercise, there are 5 options ("A":according to the specification,"B" throwing the elbows to the front, "C" lifting the dumbbell only halfway, "D" lowering the dumbbell only halfway and "E" throwing the hips to the front
+  I used the data from http://groupware.les.inf.puc-rio.br/har
+
+In the process was considered a linear discriminant analysis and logistic regression, the best model was the logistic regression with an accuracy of 75% in the train set. The approximate accuracy for predict the classes A,B,C,D and E are 87.96%, 66.07%, 70.76%, 71.52% and 69.03%, respectively. 
+
+When testing against the test set 15 out of 20 (or 75%) of predictions were correct on most likely classification based on the glm model and 18/20 (or 90%) when taking the 2nd highest probability for those predicted incorrectly on the highest class probability prediction.
+
+
+## Pre analysis and data cleaning
+
+Let's load the file and take a look at the data
+
+```{r}
+
+train=read.csv(file="pml-training.csv",header=TRUE) ; ## load the file
+names_train<-names(train)
+#Vector that contain the index for the information of arms,belt,dumbbell and forearms
+index<-vector()
+str(train)
+# head(train) ; # i looked but will spare you the paper here........
+```
+
+There are some columns that we'll need to convert to numeric
+```{r}
+# index for store the indexes 
+library(stringr) 
+j<-0
+for (i in 1:length(names_train)) {
+  name<-str_split(names_train[i],"_")
+  if((any(name[[1]]=="forearm")|any(name[[1]]=="arm")|any(name[[1]]=="belt")|
+        any(name[[1]]=="dumbbell"))&(class(train[,i])=="numeric" |
+                                       class(train[,i])=="integer") ) 
+  {j<-j+1
+   index[j]<-i}}
+```
+
+Let's split the set in a train and test so we can cross-validate later, I am using the 75% from JL's training options slides.
+
+```{r}
+library(caret) 
+set.seed(1)
+inTrain<-createDataPartition(train$classe,p=0.75,list=FALSE)
+test<-train[-inTrain,]
+train<-train[inTrain,]
+```
+
+We saw earlier there are quite a number of NAs, so we'll filter them out
+
+```{r}
+train2<-train[,c(index)]
+#Eliminate the predictors with NA from the train set
+train2<-train2[,!apply(apply(train2,2,is.na),2,any)]
+
+test2<-test[,c(index)]
+#Eliminate the predictors with NA from the test set
+test2<-test2[,!apply(apply(test2,2,is.na),2,any)]
+```
+
+-Create a dataframe with all the classes for train the model, the columns of the dataframe contain 0 and 1 for each response, for example if the value correspond with the class the value is 1,otherwise the value is 0.
+
+```{r}
+train_class<-list()
+class<-unique(test$classe)
+
+for (q in 1:length(class)){
+  
+  temp<- as.character(train$classe)
+  temp[temp!=class[q]]<-0
+  temp[temp==class[q]]<-1
+  
+  train_class[[class[q]]]<-as.numeric(temp)  
+}
+train_class<-as.data.frame(train_class)
+names(train_class)<-class
+head(train_class,5)
+```
+
+The amount of predictors for the models are 52, in these was considered all the information provided from the arms, belt, dumbbell and forearms, for this was necessary removed the predictors that not contain information for all the registers like amplitude and others.
+
+
+## DESCRIPTION OF THE MODELS
+
+We're trying to predict classe to be a, b, c, d, or e, this type of class probability prediction is done well linear discriminant analysis and logistic regression.
+
+### Linear Discriminant Analysis
+
+I'll use the default 10 k-folds.
+
+```{r}
+ctrl <- trainControl(method = "cv") 
+model_lda<-train(train$classe~.,method="lda",trControl=ctrl,data=train2)
+model_lda
+```
+
+LDA Model accuracy is:
+  
+  ```{r}
+pred_lda<-predict(model_lda,test2)
+table_lda<-table(pred_lda,test$classe)
+acc_lda<-sum(diag(table_lda))/(sum(apply(table_lda,2,sum)))
+acc_classes<-diag(table_lda)/(apply(table_lda,2,sum))
+
+#Table of results
+table_lda
+
+#Accuracy of the model
+acc_lda
+
+#Accuracy for A,B,C,D and E respectly
+acc_classes
+```
+
+
+### Logistic Regression
+
+
+```{r}
+probs<-list()
+for (ñ in 1:5){
+  model_glm<-glm(train_class[,ñ]~.,family=binomial,data=train2)
+  probs[[ñ]]<-predict(model_glm,test2,type="response")
+}
+
+probs<-as.data.frame(probs)
+names(probs)<-class
+```
+
+GLM model accuracy is:
+
+```{r}
+pred<-vector()
+for (w in 1:nrow(test2)){
+  #Select the class for the hightest probability in each row: 
+  pred[w]<-names(probs)[which.max(probs[w,])] 
+}
+```
+
+The accuracy is obtained creating a table between the predicted and test classes:
+  
+  ```{r}
+table_glm<-table(pred,test$classe)
+acc_glm<-sum(diag(table_glm))/(sum(apply(table_glm,2,sum)))
+acc_classes_glm<-diag(table_glm)/(apply(table_glm,2,sum))
+```
+Prediction versus actuals:
+```{r}
+#Table of results
+table_glm
+
+#Accuracy of the model
+acc_glm
+```
+This is a higher accuracy on the train results than the lda, and we'll pick this model.
+
+```{r}
+#Accuracy for A,B,C,D and E respectly
+acc_classes_glm
+```
+
+
+## Cross validation against the pml_test data
+
+We're now going to take a look at the pml test file
+  
+  ```{r}
+test_final=read.csv(file="pml-testing.csv",header=TRUE)
+str(test_final)
+```
+
+We'll have to predict the class (a,b,c,d,e) for these in 20 files.
+
+```{r}
+probs_final<-list()  
+for (ñ in 1:5){
+  model_glm<-glm(train_class[,ñ]~.,family=binomial,data=train2)
+  probs_final[[ñ]]<-predict(model_glm,test_final,type="response")
+}
+probs_final<-as.data.frame(probs_final)
+names(probs_final)<-class
+```
+
+
+
+```{r}
+pred_final<-vector()
+for (w in 1:nrow(test_final)){
+  pred_final[w]<-names(probs_final)[which.max(probs_final[w,])]}
+```
+
+The prediction for the twenty cases supplied by the course of practical machine learning are:
+  
+  ```{r}
+pred_final
+
+pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0("problem_id_",i,".txt")
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+}
+
+pml_write_files(pred_final)
+```
+Having uploaded the results on the submission page the glm model prediction scored 15/20 = 75%, this is in line with the glm model accuracy of 74.55% calculated above on the training set.
+Incorrect were the predictions on 5,8,11,12 and 16.
+
+
+```{r}
+wrong_pred<-c(8,11,12,16)
+```
+
+So, for these I am going to go with the next highest probability classification. 
+
+```{r}
+for (w in wrong_pred){
+  sort_probs<-sort(probs_final[w,],decreasing=TRUE,index.return=TRUE)
+  #predict the class with the second hightest probability:
+  pred_final[w]<-names(sort_probs)[2]}
+```
+
+The new predict values for this cases are:
+  
+  ```{r}
+pred_final[wrong_pred]
+```
+  
+  ```{r}
+pred_final
+```
+
+Write the files again:
+  ```{r}
+pred_final
+
+pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0("problem_id_",i,".txt")
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+}
+
+pml_write_files(pred_final)
+```
+
+
+Resubmit my predictions for the 5 missed returned 3 more correct predictions.
